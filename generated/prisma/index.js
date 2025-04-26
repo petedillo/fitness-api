@@ -187,7 +187,8 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../.env"
   },
   "relativePath": "../../prisma",
   "clientVersion": "6.6.0",
@@ -196,18 +197,17 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "prisma+postgres://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiZTk5MDI5MGEtNGExYi00YmEyLWJjMTItYTJhYWZjYWQwYWIxIiwidGVuYW50X2lkIjoiYmM5YmU2NWUxZWM1MjRiMDQxOGM0N2EwYmM5MGYzNGQ1ZTBjNTk4NDNkZmVjYjMwMTg4NDkzNmNjOWZhYmQ1YyIsImludGVybmFsX3NlY3JldCI6ImRhOGI3MWE1LWYwNzgtNGY3OS1iZjAzLTMyZGJlOTBhZTk3YSJ9.k1pG2we6nFbs65CGYzZq-cP1t2-EuIh4FtDZTv9y23A"
       }
     }
   },
   "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id           Int       @id @default(autoincrement())\n  username     String    @unique\n  email        String    @unique\n  passwordHash String\n  createdAt    DateTime  @default(now())\n  workouts     Workout[]\n  logs         Log[]\n}\n\nmodel Exercise {\n  id               Int               @id @default(autoincrement())\n  name             String            @unique\n  description      String?\n  createdAt        DateTime          @default(now())\n  workoutExercises WorkoutExercise[]\n}\n\nmodel Workout {\n  id               Int               @id @default(autoincrement())\n  userId           Int\n  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)\n  name             String\n  description      String?\n  createdAt        DateTime          @default(now())\n  workoutExercises WorkoutExercise[]\n  logs             Log[]\n}\n\nmodel WorkoutExercise {\n  id          Int      @id @default(autoincrement())\n  workoutId   Int\n  workout     Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)\n  exerciseId  Int\n  exercise    Exercise @relation(fields: [exerciseId], references: [id])\n  sets        Int      @default(1)\n  repetitions String?\n  weight      Float?\n  order       Int      @default(1)\n  logs        Log[]\n\n  @@unique([workoutId, exerciseId, order]) // Ensure unique order within a workout\n}\n\nmodel Log {\n  id                Int             @id @default(autoincrement())\n  userId            Int\n  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)\n  workoutId         Int\n  workout           Workout         @relation(fields: [workoutId], references: [id], onDelete: Cascade)\n  workoutExerciseId Int\n  workoutExercise   WorkoutExercise @relation(fields: [workoutExerciseId], references: [id], onDelete: Cascade)\n  setNumber         Int\n  repsCompleted     Int?\n  weightUsed        Float?\n  notes             String?\n  loggedAt          DateTime        @default(now())\n}\n",
   "inlineSchemaHash": "d3198338f41a9b322a72c2b2fb8004ab31c5ce468fa41b6c325fd2fbe0873d1c",
-  "copyEngine": true
+  "copyEngine": false
 }
 
 const fs = require('fs')
@@ -215,8 +215,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
-    "../generated/prisma",
     "generated/prisma",
+    "prisma",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -244,9 +244,3 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
-// file annotations for bundling tools to include these files
-path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
-path.join(process.cwd(), "../generated/prisma/libquery_engine-darwin-arm64.dylib.node")
-// file annotations for bundling tools to include these files
-path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "../generated/prisma/schema.prisma")

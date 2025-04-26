@@ -2,7 +2,7 @@ const express = require('express');
 const { PrismaClient } = require('./generated/prisma');
 const app = express();
 const port = 3000;
-
+require('dotenv').config();
 const prisma = new PrismaClient();
 
 app.use(express.json()); 
