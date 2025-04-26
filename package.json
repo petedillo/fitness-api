@@ -1,6 +1,28 @@
 {
+  "name": "fitness-tracker-api",
+  "version": "1.0.0",
+  "description": "Backend API for a fitness tracker application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "fitness",
+    "tracker",
+    "api",
+    "express",
+    "prisma"
+  ],
+  "author": "Pedro Delgadillo",
+  "license": "ISC",
+  "devDependencies": {
+    "prisma": "^6.6.0"
+  },
   "dependencies": {
+    "@prisma/client": "^6.6.0",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
   }
 }
