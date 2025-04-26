@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const usersRouter = require('./routes/users');
 const exercisesRouter = require('./routes/exercises');
+const workoutsRouter = require('./routes/workouts');
 
 const app = express();
 const port = 3000;
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 
 app.use('/users', usersRouter);
 app.use('/exercises', exercisesRouter);
+app.use('/', workoutsRouter);
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
