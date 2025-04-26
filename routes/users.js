@@ -3,9 +3,6 @@ const router = express.Router();
 const usersController = require('../controllers/usersController');
 const {verifyToken} = require('../middleware/auth');
 
-// Authentication routes
-router.post('/register', usersController.register);
-router.post('/login', usersController.login);
 router.get('/me', verifyToken, usersController.getCurrentUser);
 
 // CRUD routes - protected by authentication
