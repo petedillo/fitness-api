@@ -1,20 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const usersController = require('../controllers/usersController');
+const {verifyToken} = require('../middleware/auth');
 
-// CREATE - Create a new user
-router.post('/', usersController.createUser);
+// Authentication routes
+router.post('/register', usersController.register);
+router.post('/login', usersController.login);
+router.get('/me', verifyToken, usersController.getCurrentUser);
 
-// READ - Get all users
-router.get('/', usersController.getAllUsers);
-
-// READ - Get a specific user by ID
-router.get('/:id', usersController.getUserById);
-
-// UPDATE - Update a user
-router.put('/:id', usersController.updateUser);
-
-// DELETE - Delete a user
-router.delete('/:id', usersController.deleteUser);
+// CRUD routes - protected by authentication
+router.post('/', verifyToken, usersController.createUser);
+router.get('/', verifyToken, usersController.getAllUsers);
+router.get('/:id', verifyToken, usersController.getUserById);
+router.put('/:id', verifyToken, usersController.updateUser);
+router.delete('/:id', verifyToken, usersController.deleteUser);
 
 module.exports = router;
