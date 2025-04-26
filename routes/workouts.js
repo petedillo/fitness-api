@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const workoutsController = require('../controllers/workoutsController');
+const {verifyToken} = require('../middleware/auth');
+
+// All routes protected by authentication
+router.use(verifyToken);
 
 // CREATE - Create a new workout for a user
 router.post('/users/:userId/workouts', workoutsController.createWorkout);
