@@ -67,7 +67,11 @@ exports.createExercise = async (req, res) => {
   }
 };
 
-// READ (all exercises)
+/**
+ * Retrieves all exercises from the database
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 exports.getAllExercises = async (req, res) => {
   try {
     const exercises = await prisma.exercise.findMany();
@@ -78,7 +82,11 @@ exports.getAllExercises = async (req, res) => {
   }
 };
 
-// READ (single exercise)
+/**
+ * Retrieves a single exercise by its ID
+ * @param {Object} req - Express request object with exercise ID in params
+ * @param {Object} res - Express response object
+ */
 exports.getExerciseById = async (req, res) => {
   try {
     const exerciseId = parseInt(req.params.id);
@@ -102,7 +110,11 @@ exports.getExerciseById = async (req, res) => {
   }
 };
 
-// UPDATE
+/**
+ * Updates an existing exercise
+ * @param {Object} req - Express request object with exercise ID in params and updated data in body
+ * @param {Object} res - Express response object
+ */
 exports.updateExercise = async (req, res) => {
   try {
     const exerciseId = parseInt(req.params.id);
@@ -157,7 +169,12 @@ exports.updateExercise = async (req, res) => {
   }
 };
 
-// DELETE
+/**
+ * Deletes an exercise by its ID
+ * @param {Object} req - Express request object with exercise ID in params
+ * @param {Object} res - Express response object
+ * @throws {Error} When exercise is referenced by workouts
+ */
 exports.deleteExercise = async (req, res) => {
   try {
     const exerciseId = parseInt(req.params.id);

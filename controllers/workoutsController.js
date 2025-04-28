@@ -1,7 +1,11 @@
 const {PrismaClient} = require('../generated/prisma');
 const prisma = new PrismaClient();
 
-// CREATE - Already implemented
+/**
+ * Creates a new workout for a user with specified exercises
+ * @param {Object} req - Express request object containing userId and workout details
+ * @param {Object} res - Express response object
+ */
 exports.createWorkout = async (req, res) => {
     try {
         const userId = parseInt(req.params.userId);
@@ -81,7 +85,11 @@ exports.createWorkout = async (req, res) => {
     }
 };
 
-// READ (all workouts for a user)
+/**
+ * Retrieves all workouts for a specific user
+ * @param {Object} req - Express request object containing userId
+ * @param {Object} res - Express response object
+ */
 exports.getUserWorkouts = async (req, res) => {
     try {
         const userId = parseInt(req.params.userId);
@@ -117,7 +125,11 @@ exports.getUserWorkouts = async (req, res) => {
     }
 };
 
-// READ (single workout)
+/**
+ * Retrieves a single workout by its ID
+ * @param {Object} req - Express request object containing workout ID
+ * @param {Object} res - Express response object
+ */
 exports.getWorkoutById = async (req, res) => {
     try {
         const workoutId = parseInt(req.params.id);
@@ -151,7 +163,11 @@ exports.getWorkoutById = async (req, res) => {
     }
 };
 
-// UPDATE
+/**
+ * Updates an existing workout with new details and exercises
+ * @param {Object} req - Express request object containing workout ID and updated details
+ * @param {Object} res - Express response object
+ */
 exports.updateWorkout = async (req, res) => {
     try {
         const workoutId = parseInt(req.params.id);
@@ -261,7 +277,11 @@ exports.updateWorkout = async (req, res) => {
     }
 };
 
-// DELETE
+/**
+ * Deletes a workout by its ID
+ * @param {Object} req - Express request object containing workout ID
+ * @param {Object} res - Express response object
+ */
 exports.deleteWorkout = async (req, res) => {
     try {
         const workoutId = parseInt(req.params.id);

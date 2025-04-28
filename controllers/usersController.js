@@ -3,7 +3,12 @@ const prisma = new PrismaClient();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// User Registration
+/**
+ * Registers a new user with the provided credentials
+ * @param {Object} req - Express request object containing username, email, and password
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - JSON response with user data and authentication token
+ */
 exports.register = async (req, res) => {
   try {
     const {username, email, password} = req.body;
@@ -56,7 +61,12 @@ exports.register = async (req, res) => {
   }
 };
 
-// User Login
+/**
+ * Authenticates user credentials and provides a JWT token
+ * @param {Object} req - Express request object containing email and password
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - JSON response with user data and authentication token
+ */
 exports.login = async (req, res) => {
   try {
     const {email, password} = req.body;
@@ -104,7 +114,12 @@ exports.login = async (req, res) => {
   }
 };
 
-// Get current user profile
+/**
+ * Retrieves the profile of the currently authenticated user
+ * @param {Object} req - Express request object with authenticated user data
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - JSON response with user profile data
+ */
 exports.getCurrentUser = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -131,7 +146,12 @@ exports.getCurrentUser = async (req, res) => {
   }
 };
 
-// CREATE - Already implemented
+/**
+ * Creates a new user in the database
+ * @param {Object} req - Express request object with user data
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - JSON response with created user data
+ */
 exports.createUser = async (req, res) => {
   try {
     const newUser = await prisma.user.create({
@@ -155,7 +175,12 @@ exports.createUser = async (req, res) => {
   }
 };
 
-// READ (all users)
+/**
+ * Retrieves all users from the database
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - JSON response with array of users
+ */
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await prisma.user.findMany({
@@ -164,8 +189,6 @@ exports.getAllUsers = async (req, res) => {
         username: true,
         email: true,
         createdAt: true,
-        // Removed updatedAt as it doesn't exist in the User model
-        // Exclude passwordHash for security reasons
       }
     });
     res.status(200).json(users);
@@ -175,7 +198,12 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// READ (single user)
+/**
+ * Retrieves a specific user by their ID
+ * @param {Object} req - Express request object with user ID parameter
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - JSON response with user data
+ */
 exports.getUserById = async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
@@ -207,7 +235,12 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-// UPDATE
+/**
+ * Updates user information by ID
+ * @param {Object} req - Express request object with user ID parameter and update data
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - JSON response with updated user data
+ */
 exports.updateUser = async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
@@ -256,7 +289,12 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-// DELETE
+/**
+ * Deletes a user by their ID
+ * @param {Object} req - Express request object with user ID parameter
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - Empty response with 204 status on success
+ */
 exports.deleteUser = async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
